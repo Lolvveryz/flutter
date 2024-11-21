@@ -1,7 +1,7 @@
 import telebot
 from telebot import types
 from private import private
-from groups import group, players
+from groups import group
 import data
 bot = telebot.TeleBot("6159454834:AAEg-kIcwp5JA8_QOGVPXibuo14YCj4rs5I")
 
@@ -20,9 +20,9 @@ def callback(call):
         data.mes = call.message.id
     match call.data:
         case "reg":
-            len1 = len(players)
-            players[call.from_user.id] = ""
-            if len1 != len(players):
+            len1 = len(data.players)
+            data.players[call.from_user.id] = ""
+            if len1 != len(data.players):
                 markup = types.InlineKeyboardMarkup()
                 markup.add(types.InlineKeyboardButton("Реєстрація", callback_data="reg"))
 
@@ -30,7 +30,7 @@ def callback(call):
                 
                 bot.edit_message_text(data.text, call.message.chat.id, data.mes, reply_markup=markup)
             else:
-                bot.send_message(call.message.chat.id, f"{players}\n\n{call.from_user.id-call.from_user.username}")
+                bot.send_message(call.message.chat.id, f"{data.players}\n\n{call.from_user.id}-{call.from_user.username}")
                 bot.answer_callback_query(callback_query_id=call.id, text='Ви вже зареєстровані')
 
 
