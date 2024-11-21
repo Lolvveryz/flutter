@@ -1,0 +1,37 @@
+import telebot
+from telebot import types
+from private import private
+from groups import group, players
+import data
+bot = telebot.TeleBot("6159454834:AAEg-kIcwp5JA8_QOGVPXibuo14YCj4rs5I")
+
+
+@bot.message_handler(content_types=['text'])
+def main(mess):
+    if mess.chat.type == "private":
+        private(mess)
+    else :
+        group(mess)
+
+
+@bot.callback_query_handler(lambda call: True)
+def callback(call):
+    if data.mes == 0:
+        data.mes = call.message.id
+    match call.data:
+        case "reg":
+            len1 = len(players)
+            players[call.from_user.id] = ""
+            if len1 != len(players):
+                markup = types.InlineKeyboardMarkup()
+                markup.add(types.InlineKeyboardButton("Реєстрація", callback_data="reg"))
+
+                data.text += " "+(f"@{call.from_user.username}") if call.from_user.username != None else " "+call.from_user.first_name
+                
+                bot.edit_message_text(data.text, call.message.chat.id, data.mes, reply_markup=markup)
+            else:
+                bot.answer_callback_query(callback_query_id=call.id, text='Ви вже зареєстровані')
+
+
+
+bot.polling(non_stop=True)
