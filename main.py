@@ -30,6 +30,7 @@ def callback(call):
                 
                 bot.edit_message_text(data.text, call.message.chat.id, data.mes, reply_markup=markup)
             else:
+                bot.send_message(call.message.chat.id, f"{players}\n\n{call.from_user.id-call.from_user.username}")
                 bot.answer_callback_query(callback_query_id=call.id, text='Ви вже зареєстровані')
 
 

@@ -35,7 +35,7 @@ def group(mess):
 
         if len(players) > 0:
             bot.send_message(mess.chat.id, "Початок гри")
-            bot.send_message(mess.chat.id, katastrofa[random.randint(0, len(katastrofa)-1)])
+            bot.send_message(mess.chat.id, list(katastrofa)[random.randint(0, len(katastrofa)-1)])
             for _id,n in players.items():
                 if _id:
                     players[_id] = Person(_id, (f"@{mess.from_user.username}") if mess.from_user.username != None else mess.from_user.first_name)
